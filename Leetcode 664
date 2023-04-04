@@ -1,0 +1,24 @@
+class Solution:
+    def strangePrinter(self, s):
+        n = len(s)
+
+        @lru_cache(None)
+        def dfs(left,right):
+            if left > right:
+                return 0
+
+            while right-left >= 1 and s[left] == s[left+1]:
+                left += 1
+
+            min_val = 1 + dfs(left+1,right)
+
+            for i in range(left+1,right+1):
+                if s[i] == s[left]:
+                    min_val = min(min_val,dfs(left+1,i-1) + dfs(i,right))
+
+            return min_val 
+
+        return dfs(0,n-1)
+
+        
+        
